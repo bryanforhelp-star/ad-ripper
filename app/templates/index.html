@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AdVault Local</title>
+  <style>
+    /* ---------- reset / base ---------- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+
+    /* ---------- layout ---------- */
+    .app {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px 64px;
+    }
+
+    /* ---------- header ---------- */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #1e293b;
+      margin-bottom: 28px;
+    }
+    header .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #818cf8, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    header .tagline {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    /* ---------- search panel ---------- */
+    .search-panel {
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 28px;
+    }
+    .search-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: flex-end;
+    }
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    input[type="text"], input[type="number"], select {
+      background: #0f172a;
+      border: 1px solid #334155;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color .15s;
+    }
+    input[type="text"]:focus, input[type="number"]:focus, select:focus {
+      border-color: #818cf8;
+    }
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 2px;
+    }
+    .checkbox-group input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #818cf8;
+      cursor: pointer;
+    }
+    .checkbox-group label {
+      font-size: 0.88rem;
+      text-transform: none;
+      letter-spacing: 0;
+      color: #cbd5e1;
+      cursor: pointer;
+    }
+
+    /* ---------- buttons ---------- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .15s, transform .1s;
+      white-space: nowrap;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #fff;
+    }
+    .btn-primary:hover:not(:disabled) { opacity: 0.88; }
+    .btn-success {
+      background: linear-gradient(135deg, #059669, #047857);
+      color: #fff;
+    }
+    .btn-success:hover:not(:disabled) { opacity: 0.88; }
+    .btn-indigo {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      color: #fff;
+    }
+    .btn-indigo:hover:not(:disabled) { opacity: 0.88; }
+    .btn-sm {
+      padding: 5px 12px;
+      font-size: 0.8rem;
+    }
+
+    /* ---------- toolbar (above results) ---------- */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .result-count {
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+    .select-all-label {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ---------- ads grid ---------- */
+    .ads-grid {
+      display: grid;
+      gap: 14px;
+    }
+    .ad-card {
+      background: #1e293b;
+      border: 1px solid #273549;
+      border-radius: 12px;
+      padding: 16px 18px;
+      transition: border-color .15s;
+    }
+    .ad-card.selected {
+      border-color: #818cf8;
+      background: #1d2340;
+    }
+    .ad-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .ad-card-header input[type="checkbox"] {
+      margin-top: 3px;
+      width: 16px;
+      height: 16px;
+      accent-color: #818cf8;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .ad-card-info { flex: 1; min-width: 0; }
+    .ad-page-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #e2e8f0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .ad-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .badge-date { background: #0f3460; color: #60a5fa; }
+    .badge-days { background: #14532d; color: #4ade80; }
+    .badge-platform { background: #312e81; color: #a5b4fc; }
+    .badge-status-downloaded { background: #14532d; color: #4ade80; }
+    .badge-status-done { background: #065f46; color: #6ee7b7; }
+    .badge-status-failed { background: #7f1d1d; color: #fca5a5; }
+    .badge-status-snapshot_only { background: #78350f; color: #fcd34d; }
+    .badge-status-downloading { background: #1e3a5f; color: #93c5fd; }
+    .badge-status-transcribing { background: #4a1d96; color: #c4b5fd; }
+    .badge-status-pending { background: #1e293b; color: #94a3b8; }
+
+    .ad-text {
+      margin-top: 9px;
+      font-size: 0.85rem;
+      color: #94a3b8;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .ad-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .ad-footer a {
+      font-size: 0.8rem;
+      color: #818cf8;
+      text-decoration: none;
+    }
+    .ad-footer a:hover { text-decoration: underline; }
+    .ad-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    /* ---------- transcript preview ---------- */
+    .transcript-box {
+      margin-top: 12px;
+      background: #0f172a;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 0.82rem;
+      color: #94a3b8;
+      line-height: 1.6;
+      max-height: 140px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      display: none;
+    }
+    .transcript-box.visible { display: block; }
+
+    /* ---------- alerts / toasts ---------- */
+    #toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 8px;
+      z-index: 9999;
+    }
+    .toast {
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      max-width: 360px;
+      animation: slideIn .2s ease;
+    }
+    .toast-info { background: #1e40af; color: #bfdbfe; }
+    .toast-success { background: #065f46; color: #a7f3d0; }
+    .toast-error { background: #7f1d1d; color: #fecaca; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---------- spinner ---------- */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .6s linear infinite;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ---------- empty state ---------- */
+    .empty-state {
+      text-align: center;
+      padding: 56px 0;
+      color: #475569;
+    }
+    .empty-state .big-icon { font-size: 3.5rem; margin-bottom: 12px; }
+    .empty-state p { font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Header -->
+  <header>
+    <div>
+      <div class="logo">AdVault Local</div>
+      <div class="tagline">Search · Download · Transcribe · Meta Ad Library</div>
+    </div>
+  </header>
+
+  <!-- Search Panel -->
+  <div class="search-panel">
+    <div class="search-row">
+      <div class="field-group">
+        <label for="brand">Brand</label>
+        <input type="text" id="brand" placeholder="Nike, Apple, Coca-Cola…" style="width:220px" />
+      </div>
+      <div class="field-group">
+        <label for="country">Country</label>
+        <input type="text" id="country" value="US" style="width:80px" />
+      </div>
+      <div class="field-group">
+        <label for="limit">Limit</label>
+        <input type="number" id="limit" value="50" min="1" max="200" style="width:80px" />
+      </div>
+      <div class="field-group" style="justify-content:flex-end">
+        <div class="checkbox-group">
+          <input type="checkbox" id="active-only" checked />
+          <label for="active-only">Active only</label>
+        </div>
+      </div>
+      <div class="field-group" style="justify-content:flex-end">
+        <button class="btn btn-primary" id="search-btn" onclick="doSearch()">
+          <span id="search-spinner" class="spinner" style="display:none"></span>
+          Search
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar" id="toolbar" style="display:none">
+    <div class="toolbar-left">
+      <label class="select-all-label">
+        <input type="checkbox" id="select-all" onchange="toggleSelectAll(this.checked)" />
+        Select all
+      </label>
+      <span class="result-count" id="result-count"></span>
+    </div>
+    <button class="btn btn-success" id="download-btn" onclick="doDownload()">
+      <span id="dl-spinner" class="spinner" style="display:none"></span>
+      Download Selected
+    </button>
+  </div>
+
+  <!-- Ads Grid -->
+  <div class="ads-grid" id="ads-grid"></div>
+
+  <!-- Empty state -->
+  <div class="empty-state" id="empty-state" style="display:none">
+    <div class="big-icon">🔍</div>
+    <p>Enter a brand name above and click Search.</p>
+  </div>
+
+</div>
+
+<!-- Toast container -->
+<div id="toast-container"></div>
+
+<script>
+// ---------------------------------------------------------------------------
+// State
+// ---------------------------------------------------------------------------
+let currentAds = [];       // [{meta_ad_id, page_name, ...}]
+let jobMap = {};           // meta_ad_id -> job dict
+
+// ---------------------------------------------------------------------------
+// Toast
+// ---------------------------------------------------------------------------
+function toast(msg, type = 'info', duration = 4000) {
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  el.textContent = msg;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => el.remove(), duration);
+}
+
+// ---------------------------------------------------------------------------
+// Spinner helpers
+// ---------------------------------------------------------------------------
+function showSpinner(id, btnId) {
+  document.getElementById(id).style.display = 'inline-block';
+  document.getElementById(btnId).disabled = true;
+}
+function hideSpinner(id, btnId) {
+  document.getElementById(id).style.display = 'none';
+  document.getElementById(btnId).disabled = false;
+}
+
+// ---------------------------------------------------------------------------
+// Formatting helpers
+// ---------------------------------------------------------------------------
+function fmtDate(iso) {
+  if (!iso) return '—';
+  return iso.slice(0, 10);
+}
+function truncate(str, n = 220) {
+  if (!str) return '';
+  return str.length > n ? str.slice(0, n) + '…' : str;
+}
+function statusBadge(status) {
+  if (!status) return '';
+  const label = status.replace('_', ' ');
+  return `<span class="badge badge-status-${status}">${label}</span>`;
+}
+function platformBadge(p) {
+  return `<span class="badge badge-platform">${p}</span>`;
+}
+
+// ---------------------------------------------------------------------------
+// Search
+// ---------------------------------------------------------------------------
+async function doSearch() {
+  const brand = document.getElementById('brand').value.trim();
+  if (!brand) { toast('Enter a brand name', 'error'); return; }
+
+  const country   = document.getElementById('country').value.trim() || 'US';
+  const limit     = parseInt(document.getElementById('limit').value) || 50;
+  const activeOnly = document.getElementById('active-only').checked;
+
+  showSpinner('search-spinner', 'search-btn');
+  document.getElementById('empty-state').style.display = 'none';
+
+  try {
+    const qs = new URLSearchParams({
+      brand, country, limit,
+      active_only: activeOnly,
+    });
+    const resp = await fetch(`/api/search?${qs}`);
+    const data = await resp.json();
+
+    if (!resp.ok) {
+      toast(data.detail || 'Search failed', 'error', 6000);
+      return;
+    }
+
+    currentAds = data.ads || [];
+    jobMap = {};
+
+    if (currentAds.length === 0) {
+      document.getElementById('toolbar').style.display = 'none';
+      document.getElementById('empty-state').style.display = 'block';
+      document.getElementById('empty-state').innerHTML =
+        '<div class="big-icon">🤷</div><p>No ads found for this brand / filter.</p>';
+    } else {
+      renderAds(currentAds);
+      toast(`Found ${currentAds.length} ads`, 'success');
+      // Also load existing jobs
+      loadJobs(brand);
+    }
+  } catch (err) {
+    toast('Network error: ' + err.message, 'error', 6000);
+  } finally {
+    hideSpinner('search-spinner', 'search-btn');
+  }
+}
+
+// support Enter key
+document.getElementById('brand').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doSearch();
+});
+
+// ---------------------------------------------------------------------------
+// Render ads
+// ---------------------------------------------------------------------------
+function renderAds(ads) {
+  const grid = document.getElementById('ads-grid');
+  grid.innerHTML = '';
+  document.getElementById('toolbar').style.display = 'flex';
+  document.getElementById('result-count').textContent = `${ads.length} ads`;
+
+  ads.forEach(ad => {
+    const card = buildAdCard(ad);
+    grid.appendChild(card);
+  });
+}
+
+function buildAdCard(ad) {
+  const job = jobMap[ad.meta_ad_id];
+
+  const card = document.createElement('div');
+  card.className = 'ad-card';
+  card.id = `card-${ad.meta_ad_id}`;
+
+  const platforms = (ad.platforms || []).map(platformBadge).join('');
+  const daysStr = ad.days_running != null
+    ? `<span class="badge badge-days">${ad.days_running}d running</span>`
+    : '';
+
+  const jobStatusHtml = job ? statusBadge(job.status) : '';
+
+  let actionHtml = '';
+  if (job && (job.status === 'downloaded' || job.status === 'done')) {
+    const hasTranscript = job.transcript_path;
+    if (!hasTranscript) {
+      actionHtml = `<button class="btn btn-indigo btn-sm" onclick="doTranscribe('${ad.meta_ad_id}', this)">
+        Transcribe
+      </button>`;
+    }
+  }
+
+  card.innerHTML = `
+    <div class="ad-card-header">
+      <input type="checkbox" class="ad-checkbox" data-id="${ad.meta_ad_id}"
+             onchange="onCheckboxChange(this)" />
+      <div class="ad-card-info">
+        <div class="ad-page-name">${escHtml(ad.page_name || '(unknown page)')}</div>
+        <div class="ad-meta">
+          <span class="badge badge-date">
+            ${fmtDate(ad.start_time)} → ${ad.stop_time ? fmtDate(ad.stop_time) : 'active'}
+          </span>
+          ${daysStr}
+          ${platforms}
+          ${jobStatusHtml}
+        </div>
+        ${ad.ad_text ? `<div class="ad-text">${escHtml(truncate(ad.ad_text))}</div>` : ''}
+      </div>
+    </div>
+    <div class="ad-footer">
+      <div>
+        ${ad.snapshot_url
+          ? `<a href="${escHtml(ad.snapshot_url)}" target="_blank" rel="noopener">
+               View snapshot ↗
+             </a>`
+          : '<span style="color:#475569;font-size:.8rem">No snapshot URL</span>'
+        }
+      </div>
+      <div class="ad-actions" id="actions-${ad.meta_ad_id}">
+        ${actionHtml}
+      </div>
+    </div>
+    <div class="transcript-box" id="transcript-${ad.meta_ad_id}"></div>
+  `;
+
+  // Show transcript if already done
+  if (job && job.status === 'done' && job.transcript_path) {
+    loadTranscriptPreview(ad.meta_ad_id);
+  }
+
+  return card;
+}
+
+function refreshCard(ad) {
+  const old = document.getElementById(`card-${ad.meta_ad_id}`);
+  if (!old) return;
+  const wasChecked = old.querySelector('.ad-checkbox')?.checked;
+  const newCard = buildAdCard(ad);
+  old.replaceWith(newCard);
+  if (wasChecked) {
+    newCard.querySelector('.ad-checkbox').checked = true;
+    newCard.classList.add('selected');
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Select all / checkbox
+// ---------------------------------------------------------------------------
+function toggleSelectAll(checked) {
+  document.querySelectorAll('.ad-checkbox').forEach(cb => {
+    cb.checked = checked;
+    cb.closest('.ad-card').classList.toggle('selected', checked);
+  });
+}
+function onCheckboxChange(cb) {
+  cb.closest('.ad-card').classList.toggle('selected', cb.checked);
+  // Update select-all state
+  const all = document.querySelectorAll('.ad-checkbox');
+  const checked = document.querySelectorAll('.ad-checkbox:checked');
+  document.getElementById('select-all').checked = all.length > 0 && all.length === checked.length;
+}
+
+// ---------------------------------------------------------------------------
+// Download
+// ---------------------------------------------------------------------------
+async function doDownload() {
+  const brand = document.getElementById('brand').value.trim();
+  if (!brand) { toast('Enter a brand name', 'error'); return; }
+
+  const selected = [...document.querySelectorAll('.ad-checkbox:checked')]
+    .map(cb => cb.dataset.id);
+
+  if (selected.length === 0) {
+    toast('Select at least one ad', 'error');
+    return;
+  }
+
+  showSpinner('dl-spinner', 'download-btn');
+  toast(`Downloading ${selected.length} ad(s)…`, 'info');
+
+  try {
+    const resp = await fetch('/api/download', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ brand, ad_ids: selected }),
+    });
+    const data = await resp.json();
+
+    if (!resp.ok) {
+      toast(data.detail || 'Download failed', 'error', 6000);
+      return;
+    }
+
+    // Update jobMap and refresh cards
+    (data.jobs || []).forEach(job => {
+      if (job.meta_ad_id) jobMap[job.meta_ad_id] = job;
+    });
+
+    currentAds.forEach(ad => {
+      if (jobMap[ad.meta_ad_id]) refreshCard(ad);
+    });
+
+    const done = (data.jobs || []).filter(j => j.status === 'downloaded').length;
+    const snap = (data.jobs || []).filter(j => j.status === 'snapshot_only').length;
+    const fail = (data.jobs || []).filter(j => j.status === 'failed').length;
+
+    if (done > 0)  toast(`${done} ad(s) downloaded`, 'success');
+    if (snap > 0)  toast(`${snap} ad(s): snapshot URL only (no direct media found)`, 'info', 6000);
+    if (fail > 0)  toast(`${fail} ad(s) failed — see card for details`, 'error', 6000);
+
+  } catch (err) {
+    toast('Network error: ' + err.message, 'error', 6000);
+  } finally {
+    hideSpinner('dl-spinner', 'download-btn');
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Transcribe
+// ---------------------------------------------------------------------------
+async function doTranscribe(metaAdId, btn) {
+  const brand = document.getElementById('brand').value.trim();
+  if (!brand) { toast('Enter a brand name', 'error'); return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Transcribing…';
+
+  try {
+    const resp = await fetch('/api/transcribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ brand, ad_id: metaAdId }),
+    });
+    const data = await resp.json();
+
+    if (!resp.ok) {
+      toast(data.detail || 'Transcription failed', 'error', 6000);
+      btn.disabled = false;
+      btn.textContent = 'Transcribe';
+      return;
+    }
+
+    // Update jobMap
+    if (data.job) jobMap[metaAdId] = data.job;
+
+    // Show transcript in card
+    const transcriptEl = document.getElementById(`transcript-${metaAdId}`);
+    if (transcriptEl && data.transcript) {
+      transcriptEl.textContent = data.transcript;
+      transcriptEl.classList.add('visible');
+    }
+
+    // Refresh card to hide transcribe button
+    const ad = currentAds.find(a => a.meta_ad_id === metaAdId);
+    if (ad) refreshCard(ad);
+
+    toast('Transcription complete!', 'success');
+  } catch (err) {
+    toast('Network error: ' + err.message, 'error', 6000);
+    btn.disabled = false;
+    btn.textContent = 'Transcribe';
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Load transcript preview (after re-render)
+// ---------------------------------------------------------------------------
+function loadTranscriptPreview(metaAdId) {
+  // Transcript text is in jobMap if we fetched it; otherwise skip silently
+  const job = jobMap[metaAdId];
+  if (!job || !job.transcript_path) return;
+  // We don't have the text itself in the job dict here,
+  // only the path — the user can re-transcribe to see it.
+}
+
+// ---------------------------------------------------------------------------
+// Load existing jobs from DB
+// ---------------------------------------------------------------------------
+async function loadJobs(brand) {
+  try {
+    const resp = await fetch(`/api/jobs?brand=${encodeURIComponent(brand)}`);
+    if (!resp.ok) return;
+    const data = await resp.json();
+    (data.jobs || []).forEach(job => {
+      if (job.meta_ad_id) jobMap[job.meta_ad_id] = job;
+    });
+    // Re-render cards with job status
+    currentAds.forEach(ad => refreshCard(ad));
+  } catch (_) { /* non-critical */ }
+}
+
+// ---------------------------------------------------------------------------
+// XSS helpers
+// ---------------------------------------------------------------------------
+function escHtml(str) {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// ---------------------------------------------------------------------------
+// Init
+// ---------------------------------------------------------------------------
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('empty-state').style.display = 'block';
+});
+</script>
+</body>
+</html>

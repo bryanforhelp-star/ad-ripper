@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Environment secrets — DO NOT COMMIT
+.env
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+# Downloaded media and transcripts
+data/
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Whisper model cache (can be large)
+~/.cache/whisper/
