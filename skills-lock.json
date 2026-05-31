@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "skills": {
+    "ads": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "ads/SKILL.md",
+      "computedHash": "2e44f03ffdff3083e28f9b8f7fb7a63f53b78bb4390a8a95d41de30a1c92c1be"
+    },
+    "ads-amazon": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-amazon/SKILL.md",
+      "computedHash": "ece87402b6205e4a24fe32731da4aef0b8666febe0c8051f5b39174bdb99d436"
+    },
+    "ads-apple": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-apple/SKILL.md",
+      "computedHash": "c850678ebfb566ac942da01430444b3f58581a7c3de3c163c8458fecdbd647fe"
+    },
+    "ads-attribution": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-attribution/SKILL.md",
+      "computedHash": "9ccba2bee008050e94e82719f655bc54ea4d244e07787173114ab3d440093eec"
+    },
+    "ads-audit": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-audit/SKILL.md",
+      "computedHash": "cd756ca47aa188ce3b0f634258d696ca06c9d9276edf7aa6164b505a9db67abf"
+    },
+    "ads-budget": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-budget/SKILL.md",
+      "computedHash": "e588c170e7b2dcf73c6d6d541b9fab69e8d1e2ffafffbc8b0fd3b56cc6f0b736"
+    },
+    "ads-competitor": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-competitor/SKILL.md",
+      "computedHash": "8f223d607bec7a12e792c2c50946003a7b2d30fb977aec6511550e18a58b8644"
+    },
+    "ads-create": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-create/SKILL.md",
+      "computedHash": "452f0c34bed0bf6851642eb502eef430114ba4539169ca3a268f626a36f5bba0"
+    },
+    "ads-creative": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-creative/SKILL.md",
+      "computedHash": "187281a3a59d756509e69f7ca1d0b0d4ee3d844d1e8b5606d8cc2f6eff107c5a"
+    },
+    "ads-dna": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-dna/SKILL.md",
+      "computedHash": "d2a8bd9c3a7c5efa05b50f6352f65c8d0ccedbce1d9baa4b1d45832f935e98eb"
+    },
+    "ads-generate": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-generate/SKILL.md",
+      "computedHash": "adf0877bb2d149a3488e9062376d9eeca364f491f1476291990a8e1638af5d84"
+    },
+    "ads-google": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-google/SKILL.md",
+      "computedHash": "33e81810db7647dda89f015f8c6f445155e473a08dde6f9873464808e8786733"
+    },
+    "ads-landing": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-landing/SKILL.md",
+      "computedHash": "5fd3d95e9b70f9dff7c960a96b6574afb27f8506936b3c01f692059fcc7ad9e4"
+    },
+    "ads-linkedin": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-linkedin/SKILL.md",
+      "computedHash": "653cb7a7656c2ab5fc48fe221b06861915f2e88e821624942c0194bc1676af9a"
+    },
+    "ads-math": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-math/SKILL.md",
+      "computedHash": "907ee3e0a03869fe37a8c1f3b4b34f63836519cd335b9ce3621f8af65a7245ea"
+    },
+    "ads-meta": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-meta/SKILL.md",
+      "computedHash": "afc82d654c50e3039d054875bd7606518adaef6460c95f480bb2df6551626585"
+    },
+    "ads-microsoft": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-microsoft/SKILL.md",
+      "computedHash": "83eaf69fcda83ae4d78ef52dac261d96cafd3e12b0fa9d7546c3970e6f7ff706"
+    },
+    "ads-photoshoot": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-photoshoot/SKILL.md",
+      "computedHash": "e455dd66845b3ea18a3b105dd55b9af0815afe9baa5ede732ae64e2c32fff20e"
+    },
+    "ads-plan": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-plan/SKILL.md",
+      "computedHash": "a12697ef7c80bd00764806d7bac0ea4d13ec50a50a95147ac42868c56305ca98"
+    },
+    "ads-server-side-tracking": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-server-side-tracking/SKILL.md",
+      "computedHash": "9463b420aaa166becc5c457744099d239f15027dbd18b2720bb63c9e9fecb0bb"
+    },
+    "ads-test": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-test/SKILL.md",
+      "computedHash": "f445904cf0229f1dbd09cf2846042ba81c529cb03855bd0884044801ef1bb7ee"
+    },
+    "ads-tiktok": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-tiktok/SKILL.md",
+      "computedHash": "158dee85aded79602b5a642bfee4924f6e053bfe042919c8e9169a644d8e034b"
+    },
+    "ads-youtube": {
+      "source": "AgriciDaniel/claude-ads",
+      "sourceType": "github",
+      "skillPath": "skills/ads-youtube/SKILL.md",
+      "computedHash": "25652b37f6830a2ca82bbe414ec8a423e4feb225287117eabcb59400037893e1"
+    },
+    "competitive-ads-extractor": {
+      "source": "ComposioHQ/awesome-claude-skills",
+      "ref": "master",
+      "sourceType": "github",
+      "skillPath": "competitive-ads-extractor/SKILL.md",
+      "computedHash": "8367364ae0aefcf0554468308066e39dc81aeaccfcf9922f85de1b7f56ad61a8"
+    }
+  }
+}
